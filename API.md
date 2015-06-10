@@ -130,12 +130,48 @@ The endpoint for a campaign resource is the following:
 
 ### Profile
 
-The endpoint for a profile resource is the following:
+The profile endpoint allows users to retrieve profile data for the owner of the calling Application. A successfull response is either
+a **User** object, or an **Organisation** object.
  
 ``` html
-/profile
+API Endpoint: /profile
+Allowed methods: GET
 ```
 
+Sample response for a **User** object:
+ 
+``` json
+{
+	"id"="1234", // integer value
+	"isActive" = true,
+	"screenName" = "user123",
+	"profileImageUrl" = "https://url-to-profile-image.com/profile.jpg",
+	"email" = "someone@domain.com",
+	"address" = "1st Street, Somewhereville",
+	"country" = "UK",
+	"phone" = "00123456789",
+	"company" = "ACME Corporation ltd",
+	"website" = "https://acmecorporation.com",
+	"createdOn" = "2015-06-10T18:25:43.511Z",
+	"plan" = "pro" // optional
+}
+```
+
+
+Sample response for an **Organisation** object:
+ 
+``` json
+{
+	"id"="1234", // integer value
+	"name" = "ACME Corporation",
+	"description" = "beep - beep",
+	"accessUrl" = "https://acme.proximitysense.com/", // optional, if white-labeled
+	"title" = "Control room - ACME Corp - ", // optional, if white-labeled
+	"logoUrl" = "http://acme.proximitysense.com/logo.png", // optional, if white-labeled
+	"createdOn" = "2015-06-10T18:25:43.511Z",
+}
+```
+ 
 
 ### Supernodes
 
