@@ -166,7 +166,7 @@ Sample response for an **Organisation** object:
 	"name" = "ACME Corporation",
 	"description" = "beep - beep",
 	"accessUrl" = "https://acme.proximitysense.com/", // optional, if white-labeled
-	"title" = "Control room - ACME Corp - ", // optional, if white-labeled
+	"title" = "Control room - ACME Corp", // optional, if white-labeled
 	"logoUrl" = "http://acme.proximitysense.com/logo.png", // optional, if white-labeled
 	"createdOn" = "2015-06-10T18:25:43.511Z",
 }
