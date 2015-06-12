@@ -112,10 +112,101 @@ The endpoint for an audience resource is the following:
 
 ### Beacons
 
-The endpoint for a beacon resource is the following:
+The beacons endpoint allows users to retrieve beacon data. A successfull response consists of an **array** of **Beacon** objects. 
+Only beacons that are owned by the owner of the calling Application are returned. 
  
 ``` html
-/beacons
+API Endpoint: /beacons{/serialNumber}
+Allowed methods: GET, POST
+```
+
+A **Beacon** object has the following fields:
+
+| Field name  				| Type  		| Sample value 			| Read/Write	| Note 		|
+| :------------------------ |:--------- 	| -----:				| :-----------:	||
+| id      					| integer 		| 1 					| R			||
+| serialNumber      		| string 		| "123-test" 			| R			||
+| name      				| string 		| "Sample beacon 1"		| R/W			||
+| description      			| string 		| "description" 		| R/W			||
+| manufacturer      		| string 		| "Blue Sense Networks" | R			||
+| isInSync      			| boolean 		| false					| R|true if latest configuration changes were applied successfully 	|
+| pincode      				| string 		| 0ABCDEF1				| R|Hexadecimal security code, used to authenticate when applying beacon configuration|
+| uuid      				| uuid / guid 	| "A0B13730-3A9A-11E3-AA6E-0800200C9A66" 					| R/W|iBeacon UUID|
+| major      				| integer 		| 100 					| R/W|iBeacon Major (0-65535)		|
+| minor      				| integer 		| 101 					| R/W|iBeacon Minor (0-65535) 		|
+| advertisingInterval      	| integer 		| 300 					| R/W|In miliseconds				|
+| broadcastPower      		| integer 		| 8 					| R/W|Valid range is 0-9 for long range, and 0-15 for standard models |
+| batteryLevel      		| integer 		| 80											| R|values are in percent, valid range is 0-100	|
+| createdOn      			| date 			| "2015-06-11T10:57:50.0650585+01:00"			|R||
+| userMetadata      		| dictionary 	| { "key1":"value1", "key2":"value2" } 			|R/W|||
+
+``` json
+{
+	"id":"1", // integer number
+	"serialNumber":"123", // can be used to query for this beacon
+	"name":"Sample Beacon 1",
+	"description":null,
+	"manufacturer":"Blue Sense Networks",
+	"isInSync":false, // true if latest configuration changes were applied successfully
+	"pincode":"A0BCDEF1",
+	"uuid":"A0B13730-3A9A-11E3-AA6E-0800200C9A66",
+	"major":100,
+	"minor":200,
+	"advertisingInterval":360, // in miliseconds
+	"broadcastPower":8,
+	"batteryLevel":90, // in percent
+	"createdOn":"2015-06-11T10:57:50.0650585+01:00",
+	"userMetadata": {
+		"key1":"value1",
+		"key2":"value2",
+	}
+}
+```
+
+####Getting all beacons
+
+Calling the endpoint without specifying a serial number retrieves all beacons, owned by the owner of the calling Application. 
+The order they are returned in is indeterminate at the moment, so don't rely on specific ordering. 
+
+Sample response looks like this:
+
+``` json
+[
+	{
+		"id":"1",
+		"name":"Sample Beacon 1",
+		"serialNumber":"123",
+		...
+	},
+	...
+	{
+		"id":"22",
+		"name":"Sample Beacon 22",
+		"serialNumber":"234",
+		...
+	}
+
+]
+```
+
+####Getting a single beacon
+
+When you need to retrieve data for only a specific beacon, append the beacon serial number to the request url, like this:
+
+``` html
+GET: /beacons/123abc
+```
+
+####Updating beacons' details
+
+Updating beacons' details is done by making a POST request to the same endpoint. The passed in array of one or more **Beacon** objects
+must have their respective serial number fields correctly filled. Only fields marked with R/W are updated, if you pass in fields that are read-only, or don't exist
+in the object definition they will be ignored.
+
+
+``` html
+POST: /beacons
+Content: [{Beacon}, {Beacon} ... {Beacon}]
 ```
 
 
